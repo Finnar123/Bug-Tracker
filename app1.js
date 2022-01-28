@@ -588,7 +588,7 @@ app.post('/createtic', async (req,res) => {
 
 
     res.redirect("/ticket")
-    // return res.render("ticket.ejs", {name: user.username, ticket: ticket1, project: project })
+    
 })
 
 
@@ -827,7 +827,7 @@ app.post('/login', async (req,res) => {
     loginMistake = "";
 
     res.redirect("/index");
-    // res.render("index.ejs", { name: res.locals.username})
+    
 })
 
 app.post('/logout', (req,res) => {
@@ -841,6 +841,8 @@ app.post('/logout', (req,res) => {
     globalticketid = "";
     loginMistake = "";
     joinProjMistake = "";
+    createProjMistake = "";
+    createTicketMistake = "";
 
 })
 
