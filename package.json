@@ -1,0 +1,15 @@
+{
+  "name": "bug-tracker",
+  "version": "1.0.0",
+  "description": "[SB Admin 2](https://startbootstrap.com/theme/sb-admin-2/) is an open source admin dashboard theme for [Bootstrap](https://getbootstrap.com/) created by [Start Bootstrap](https://startbootstrap.com/).",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies":{
+    "ejs": "^3.1.6",
+    "express": "^4.17.2"
+  }
+}
