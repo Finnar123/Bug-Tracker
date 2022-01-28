@@ -22,6 +22,8 @@ let globalticketid = "";
 
 let joinProjMistake = "";
 let loginMistake = "";
+let createProjMistake = "";
+let createTicketMistake = "";
 
 // TASKS
 
@@ -362,7 +364,7 @@ app.get('/createproj', isAuth, async (req,res) => {
     if(user)
     {
         
-        res.render("createproj.ejs", {name: user.username})
+        res.render("createproj.ejs", {name: user.username, mistake: createProjMistake})
     }else
     {
         res.redirect("/login")
@@ -392,6 +394,7 @@ app.post('/createproj', async (req,res) => {
 
     if(projname == null || desc == null)
     {
+        createProjMistake = "Please enter a project name and description!";
         res.redirect("/createproj")
         // res.render("createproj.ejs", {name: user.username})
     }
@@ -409,17 +412,8 @@ app.post('/createproj', async (req,res) => {
 
     globalprojectid = project1.id;
     
-    // let ticket = await ticketModel.findOne({ projectid: globalprojectid });
-
-
-    // if(ticket == null)
-    // {
-    //     ticket = "";
-    // }
-    
     res.redirect("/project");
 
-    // return res.render("project.ejs", {name: user.username, email: project1.owner, id: project1.id, project: project1, ticket: ticket})
 
     
 })
@@ -539,7 +533,7 @@ app.get('/createtic', isAuth, async (req,res) => {
 
     if(user)
     {
-        res.render("createtic.ejs", {name: user.username})
+        res.render("createtic.ejs", {name: user.username, mistake: createTicketMistake})
     }else
     {
         res.redirect("/login")
@@ -558,14 +552,21 @@ app.post('/createtic', async (req,res) => {
 
     if(projid == null || desc == null || ticname == null)
     {
+        createTicketMistake = "Please fill all the fields!"
         res.redirect("/createtic");
         // res.render("createtic.ejs", {name: user.username})
     }
 
     let project = await projectModel.findOne({ id: projid})
 
+    if(project.owner == undefined)
+    {
+        createTicketMistake = "That project id does not exist!";
+        res.redirect('/createtic');
+    }
     // checks if the person create the ticket is in the project
     if(!(project.members.includes(user.email))){
+        createTicketMistake = "You are not a team member in that project!";
         res.redirect("/createtic");
         // res.render("createtic.ejs", {name: user.username})
     }
