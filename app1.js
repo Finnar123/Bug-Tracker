@@ -27,8 +27,8 @@ let loginMistake = "";
 
 // make a comment section for tickets ( hardest ) 
 //  updates ( make an update page pass in ticket id or project id ) 
-// add times projects and tickets are created
-// ticket priority
+// add the times projects and tickets are created
+// ticket priority , ticket status
 // add create project and create ticket mistakes
 
 
@@ -100,7 +100,7 @@ app.get('/index', isAuth, async (req,res) => {
         let allrequests = await joinReqModel.find({ account: globalemail });
 
 
-        res.render("index.ejs", {name: user.username, projects: allprojects.length, ticketcompleted: user.ticketscompleted, pending: allrequests.length})
+        res.render("index.ejs", {name: user.username, projects: allprojects.length,  pending: allrequests.length})
     }else
     {
         res.redirect("/login")
