@@ -371,6 +371,32 @@
                                 placeholder="Description" name="desc">
                             </div>
                             <div class="form-group">
+
+                                <p class="mb-4"> Priority: 
+                                </p>
+                                <select style="width: 300px;height:40px; font-size:20px;"class="m-0 font-weight-bold text-primary" name="priority">                                 
+                                    <option value="Low"> Low </option>
+                                    <option value="Medium"> Medium </option>
+                                    <option value="High"> High </option>
+                                    
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <p class="mb-4"> Ticket Type: 
+                                </p>
+
+                                <select style="width: 300px;height:40px; font-size:20px;"class="m-0 font-weight-bold text-primary" name="tickettype">                                 
+                                    <option value="Bug">Bug</option>
+                                    <option value="Task">Task</option>
+                                    <option value="Subtask">Subtask</option>
+                                    <option value="Change">Change</option>
+                                    <option value="Incident">Incident </option>
+                                    <option value="New feature">New feature</option>
+                                    <option value="Support">Support</option>
+                                    <option value="Problem">Problem</option>
+                                    
+                                </select>
+
                             </div>
                             <p class="mb-4" style="color:red;">
                                 <%= mistake %>

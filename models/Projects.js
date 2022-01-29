@@ -27,6 +27,14 @@ const projectSchema = new Schema({
         type: String,
         required: true,
         unique: true,
+    },
+    timecreated:{
+        type: String,
+        required: true,
+    },
+    timeupdated:{
+        type: String,
+        required: true,
     }
 })
 

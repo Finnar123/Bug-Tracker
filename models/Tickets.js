@@ -27,6 +27,26 @@ const ticketSchema = new Schema({
         type: String,
         required: true,
         unique: true,
+    },
+    status:{
+        type: String,
+        required: true,
+    },
+    priority:{
+        type: String,
+        required: true,
+    },
+    type:{
+        type: String,
+        required: true,
+    },
+    timecreated:{
+        type: String,
+        required: true,
+    },
+    timeupdated:{
+        type: String,
+        required: true,
     }
 })
 

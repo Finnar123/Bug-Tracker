@@ -375,8 +375,11 @@
                                         <tr>
                                             <th>Ticket</th>
                                             <th>description</th>
-                                            <th> Project ID</th>
-                                            <th> Ticket ID</th>
+                                            <th>Project ID</th>
+                                            <th>Ticket ID</th>
+                                            <th>Status</th>
+                                            <th>Priority</th>
+                                            <th>Type</th>
                                             <th>Portal </th> 
                                         </tr>
                                     </thead>
@@ -384,9 +387,12 @@
                                         <tr>
                                             <th>Ticket</th>
                                             <th>description</th>
-                                            <th> Project ID</th>
-                                            <th> Ticket ID</th>
-                                            <th> Portal <th>
+                                            <th>Project ID</th>
+                                            <th>Ticket ID</th>
+                                            <th>Status</th>
+                                            <th>Priority</th>
+                                            <th>Type</th>
+                                            <th>Portal <th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
@@ -399,6 +405,10 @@
                                                 <td><%=  ticket[i].description %></td>
                                                 <td> <%= ticket[i].projectid %></td>
                                                 <td> <%= ticket[i].id %> </td>
+                                                <td> <%= ticket[i].status %></td>
+                                                <td> <%= ticket[i].priority %></td>
+                                                <td> <%= ticket[i].type %></td>
+
                                                 <td>
                                                 <button  class="btn btn-primary" type="submit" name="<%= ticket[i].id %>">take me there </button>
                                                 </td>
@@ -410,6 +420,10 @@
                                                     <td><%=  ticket.description %></td>
                                                     <td> <%= ticket.projectid %></td>
                                                     <td> <%= ticket.id %> </td>
+                                                    <td> <%= ticket.status %></td>
+                                                <td> <%= ticket.priority %></td>
+                                                <td> <%= ticket.type %></td>
+
                                                     <td><button  class="btn btn-primary" type="submit" name="<%= ticket.id %>">take me there </button></td>
                                                 </tr>
                                                 <% } %>

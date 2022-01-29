@@ -29,10 +29,14 @@ let createTicketMistake = "";
 
 // make a comment section for tickets ( hardest ) 
 //  updates ( make an update page pass in ticket id or project id ) 
-// add the times projects and tickets are created
-// ticket priority , ticket status
+// 
 
-
+function getToday(){
+    var today = new Date();
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        return date + " " + time;
+}
 
 mongoose.connect(mongoURI).then((res) => {
     console.log("MongoDB Connected");
@@ -259,6 +263,19 @@ app.post('/joinrequests',  async (req,res) => {
         )
 
         await joinReqModel.deleteOne({ _id: pending.substring(6) });
+
+    
+        const response2 = await projectModel.findOneAndUpdate(
+            {
+                id: projectid,
+            },
+            {
+                $set:{
+                    timeupdated: getToday(),
+            }
+            })
+
+
     }
     
 
@@ -295,7 +312,19 @@ app.post('/removeprojectmember', async (req,res) => {
         }
     )
 
-    res.redirect('/project');
+
+    const response2 = await projectModel.findOneAndUpdate(
+        {
+            id: projectid,
+        },
+        {
+            $set:{
+                timeupdated: getToday(),
+        }
+        })
+        
+        
+        res.redirect('/project');
 })
 
 // DELETES THE PROJECT
@@ -312,6 +341,19 @@ app.post('/deleteproject', async (req,res) => {
     let project = await projectModel.findOne({ id: projectid });
 
 
+    const response2 = await projectModel.findOneAndUpdate(
+        {
+            id: projectid,
+        },
+        {
+            $set:{
+                timeupdated: getToday(),
+        }
+        })
+
+
+
+
     const project1 = new archiveprojectModel({
         name: project.name,
         description: project.description,
@@ -319,6 +361,8 @@ app.post('/deleteproject', async (req,res) => {
         members: project.owner,
         private: project.private,
         id: project.id,
+        timecreated: project.timecreated,
+        timeupdated: project.timeupdated,
     })
 
     await project1.save();
@@ -335,6 +379,11 @@ app.post('/deleteproject', async (req,res) => {
             owner: alltickets[i].owner,
             members: alltickets[i].owner,
             id: alltickets[i].id,
+            status: alltickets[i].status,
+            priority: alltickets[i].priority,
+            type: alltickets[i].type,
+            timecreated: alltickets[i].timecreated,
+            timeupdated: alltickets[i].timeupdated,
         })
     
         await ticket1.save();
@@ -398,6 +447,8 @@ app.post('/createproj', async (req,res) => {
         // res.render("createproj.ejs", {name: user.username})
     }
 
+    let sametime = getToday();
+
     const project1 = new projectModel({
         name: projname,
         description: desc,
@@ -405,6 +456,8 @@ app.post('/createproj', async (req,res) => {
         members: user.email,
         private: privateVar,
         id: Date.now() + (Math.floor(Math.random() * 1000)) + 1,
+        timecreated: sametime,
+        timeupdated: sametime,
     })
 
     await project1.save();
@@ -507,6 +560,8 @@ app.get('/ticket', isAuth, async (req,res) => {
 
     let ticket = await ticketModel.findOne({ id: globalticketid });
 
+    console.log(ticket);
+
     let project = await projectModel.findOne({ id: ticket.projectid})
 
     if(!(project.members.includes(user.email))){
@@ -546,10 +601,11 @@ app.get('/createtic', isAuth, async (req,res) => {
 app.post('/createtic', async (req,res) => {
     let user = await userModel.findOne({ email: globalemail });
 
+    // copy the thing you did in add members ticket
 
-    const { projid, ticname, desc} = req.body;
+    const { projid, ticname, desc, priority, tickettype} = req.body;
 
-    if(projid == null || desc == null || ticname == null)
+    if(projid == null || desc == null || ticname == null || priority == null || tickettype == null)
     {
         createTicketMistake = "Please fill all the fields!"
         res.redirect("/createtic");
@@ -572,6 +628,8 @@ app.post('/createtic', async (req,res) => {
 
 
 
+    sametime = getToday();
+
     const ticket1 = new ticketModel({
         name: ticname,
         projectid: projid,
@@ -579,6 +637,11 @@ app.post('/createtic', async (req,res) => {
         owner: user.email,
         members: user.email,
         id: Date.now() + (Math.floor(Math.random() * 1000)) + 1,
+        status: "Open",
+        priority: priority,
+        type: tickettype,
+        timecreated: sametime,
+        timeupdated: sametime,
     })
 
     await ticket1.save();
@@ -648,9 +711,25 @@ app.post('/deleteticket', async (req,res) => {
         owner: ticket.owner,
         members: ticket.owner,
         id: ticket.id,
+        status: ticket.status,
+        priority: ticket.priority,
+        type: ticket.type,
+        timecreated: ticket.timecreated,
+        timeupdated: ticket.timeupdated,
     })
 
     await ticket1.save();
+
+    const response2 = await projectModel.findOneAndUpdate(
+        {
+            id: ticket.projectid,
+        },
+        {
+            $set:{
+                timeupdated: getToday(),
+        }
+        })
+
 
     await ticketModel.deleteOne({ id: ticketid });
 
@@ -677,7 +756,6 @@ app.post('/removeticketmember', async (req,res) => {
 
     memberemail = memberemail.substring(0,memberemail.length-1);
 
-
     const response = await ticketModel.findOneAndUpdate(
         {
             id: ticketid,
@@ -686,6 +764,9 @@ app.post('/removeticketmember', async (req,res) => {
         {
             $pull: {
                 members: memberemail,
+            },
+            $set:{
+                timeupdated: getToday(),
             }
         }
     )
@@ -723,6 +804,17 @@ app.post('/addticketmember', async (req,res) => {
             }
         }
     )
+
+    const response2 = await ticketModel.findOneAndUpdate(
+        {
+            id: ticketid,
+        },
+        {
+            $set:{
+                timeupdated: getToday(),
+        }
+        })
+
 
     res.redirect('/ticket');
 

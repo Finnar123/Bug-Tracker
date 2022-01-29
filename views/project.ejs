@@ -365,6 +365,9 @@
                     <p class="mb-4">Project Id: <%= id %></p>
                     <hr>
                     <p class="mb-4">Description: <%= project.description %></p>
+                    <p class="mb-4">Time Created: <%= project.timecreated %></p>
+                    <p class="mb-4">Last Time Update: <%= project.timeupdated %></p>
+
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
@@ -389,6 +392,9 @@
                                         <tr>
                                             <th>Ticket name</th>
                                             <th>Description</th>
+                                            <th>Status</th>
+                                            <th>Priority</th>
+                                            <th>Type</th>
                                             <th>Remove</th>
                                         </tr>
                                     </thead>
@@ -396,6 +402,9 @@
                                         <tr>
                                             <th>Ticket name</th>
                                             <th>description</th>
+                                            <th>Status</th>
+                                            <th>Priority</th>
+                                            <th>Type</th>
                                             <th>Remove</th>
                                         </tr>
                                     </tfoot>
@@ -407,6 +416,9 @@
                                                 
                                                 <td><%= ticket[i].name %></td>
                                                 <td><%= ticket[i].description %></td>
+                                                <td> <%= ticket[i].status %></td>
+                                                <td> <%= ticket[i].priority %></td>
+                                                <td> <%= ticket[i].type %> </td>
                                                 <td>
 
                                                     <% if(project.owner == user.email){ %>
@@ -420,6 +432,11 @@
                                                 <tr>
                                                 <td><%= ticket.name %></td>
                                                 <td><%= ticket.description %></td>
+                                                <td> <%= ticket.id %> </td>
+                                                    <td> <%= ticket.status %></td>
+                                                    <td> <%= ticket.priority %> </td>
+
+                                                    <td> <%= ticket.type %> </td>
                                                     <td>
 
                                                         <% if(project.owner == user.email){ %>
