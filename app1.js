@@ -560,7 +560,6 @@ app.get('/ticket', isAuth, async (req,res) => {
 
     let ticket = await ticketModel.findOne({ id: globalticketid });
 
-    console.log(ticket);
 
     let project = await projectModel.findOne({ id: ticket.projectid})
 
