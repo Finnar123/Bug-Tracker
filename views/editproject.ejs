@@ -314,11 +314,11 @@
 
                             
                                 <h1 class="h3 mb-0 text-gray-800">Name:</h1>
-                                <p contenteditable="true" style="width: 500px;height: 50px;font-size: 25px;" name="projname" ><%= project.name %></p>
+                                <input style="width: 500px;height: 50px;font-size: 25px;" type="text" value="<%= project.name %>" name="projname" />
 
                                 
 
-                                <h1 class="h3 mb-0 text-gray-800">Description:</h1><p contenteditable="true" style="width: 500px;height: 50px;font-size: 25px;" name="desc"><%= project.description %></p>
+                                <h1 class="h3 mb-0 text-gray-800">Description:</h1><input style="width: 500px;height: 50px;font-size: 25px;" name="desc" type="text" value="<%= project.description %>"/>
 
                             <a href="/project" class="btn btn-primary btn-user btn-block">
                                 Cancel

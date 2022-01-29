@@ -529,13 +529,24 @@ app.get('/editproject', isAuth, async (req,res) => {
 
 app.post('/editproject', async (req,res) => {
 
-    
-    console.log(req.body);
-    // let holder = req.body;
-    // let stringholder = JSON.stringify(holder);
-    // let array = stringholder.split('"');
+    let projname = req.body.projname;
+    let desc = req.body.desc;
 
-    res.redirect('/editproject');
+    const response2 = await projectModel.findOneAndUpdate(
+        {
+            id: globalprojectid,
+        },
+        {
+            $set:{
+                name: projname,
+                description: desc,
+                timeupdated: getToday(),
+        }
+        })
+
+
+
+    res.redirect('/project');
 });
 
 
