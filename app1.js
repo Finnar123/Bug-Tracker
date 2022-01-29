@@ -496,8 +496,6 @@ app.post('/projects', async (req,res) => {
 
     let projectid = array[5].toString();
 
-    let user = await userModel.findOne({ email: globalemail });
-
     let project = await projectModel.findOne({ id: projectid });
 
     if(!project)
@@ -510,6 +508,36 @@ app.post('/projects', async (req,res) => {
     res.redirect("/project")
 
 });
+
+app.get('/editproject', isAuth, async (req,res) => {
+
+    if(globalprojectid == "" || globalemail == "")
+    {
+        res.redirect('/index');
+    }
+
+    let user = await userModel.findOne({ email: globalemail });
+
+    let project = await projectModel.findOne({ id: globalprojectid });
+
+    res.render("editproject.ejs", {name: user.username, project: project})
+    
+
+
+
+});
+
+app.post('/editproject', async (req,res) => {
+
+    
+    console.log(req.body);
+    // let holder = req.body;
+    // let stringholder = JSON.stringify(holder);
+    // let array = stringholder.split('"');
+
+    res.redirect('/editproject');
+});
+
 
 
 //  allows users to go to any project thats on the list
@@ -626,8 +654,20 @@ app.post('/createtic', async (req,res) => {
     }
 
 
+    // portalspace
 
     sametime = getToday();
+
+    const response2 = await projectModel.findOneAndUpdate(
+        {
+            id: projid,
+        },
+        {
+            $set:{
+                timeupdated: sametime,
+        }
+        })
+
 
     const ticket1 = new ticketModel({
         name: ticname,

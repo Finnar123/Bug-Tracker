@@ -358,10 +358,15 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Ticket <%= ticket.name %></h1>
+                    <h1 class="h3 mb-2 text-gray-800">Ticket <%= ticket.name %>
+                        <button class="btn btn-primary" type="button">
+                            <i style="font-size:24px" class="fa">&#xf044;</i>
+                        </button>
+                    </h1>
                     <p class="mb-4"> Owner: <%= ticket.owner %></p>
                     <hr>
                     <p class="mb-4">Project Name: <%= project.name %></p>
+                    
                     <p class="mb-4">Project Id: <%= ticket.projectid %></p>
                     <hr>
                     <p class="mb-4">Ticket Id: <%= ticket.id %></p>

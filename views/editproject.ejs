@@ -242,59 +242,6 @@
                             </div>
                         </li>
 
-                        <!-- Nav Item - Messages -->
-                        <!-- <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-envelope fa-fw"></i>
-                                
-                                <span class="badge badge-danger badge-counter">99+</span>
-                            </a>
-                            
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="messagesDropdown">
-                                <h6 class="dropdown-header">
-                                    Message Center
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_1.svg"
-                                            alt="...">
-                                        <div class="status-indicator bg-success"></div>
-                                    </div>
-                                    <div class="font-weight-bold">
-                                        <div class="text-truncate"> message </div>
-                                        <div class="small text-gray-500">person · time sent</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_2.svg"
-                                            alt="...">
-                                        <div class="status-indicator"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">I have the photos that you ordered last month, how
-                                            would you like them sent to you?</div>
-                                        <div class="small text-gray-500">Jae Chun · 1d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_3.svg"
-                                            alt="...">
-                                        <div class="status-indicator bg-warning"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Last month's report looks great, I am very happy with
-                                            the progress so far, keep up the good work!</div>
-                                        <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-                            </div>
-                        </li> -->
-
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
@@ -338,14 +285,15 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
+                    <div class="col-lg-6 mb-4">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Create Project</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Edit Project</h1>
                         <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
                     </div>
 
                     <!-- Content Row -->
-                    <div class="row">
+                    
 
                         <!-- Earnings (Monthly) Card Example -->
 
@@ -361,42 +309,37 @@
                                     </div>
                                 </div>
                         -->
-                        <form action="/createproj" method="POST">
+                        <form action="/editproject" method="POST">
 
-                        <form class="user">
-                            <div class="form-group">
-                                <input style="width:500px" class="form-control form-control-user" name="projname"
-                                    placeholder="Project Name">
-                            </div>
-                            <div class="form-group">
-                                <input name="desc" class="form-control form-control-user"
-                                placeholder="Description">
-                            </div>
-                            <div class="form-group">
-                                <div class="custom-control custom-checkbox small">
-                                    <input name="private" type="checkbox" class="custom-control-input" id="customCheck">
-                                    <label class="custom-control-label" for="customCheck">Private</label>
-                                </div>
-                            </div>
-                            <p class="mb-4" style="color:red;">
-                                <%= mistake %>
-                            </p>
+
                             
-                            <button type="submit" class="btn btn-primary btn-user btn-block">
-                                Create
-                        </button>
+                                <h1 class="h3 mb-0 text-gray-800">Name:</h1>
+                                <p contenteditable="true" style="width: 500px;height: 50px;font-size: 25px;" name="projname" ><%= project.name %></p>
 
-                        </form>
+                                
+
+                                <h1 class="h3 mb-0 text-gray-800">Description:</h1><p contenteditable="true" style="width: 500px;height: 50px;font-size: 25px;" name="desc"><%= project.description %></p>
+
+                            <a href="/project" class="btn btn-primary btn-user btn-block">
+                                Cancel
+                            </a>                                
+                            <button type="submit" class="btn btn-primary btn-user btn-block">
+                                Edit
+                        </button>
+                    </div>
+                </form>
+
+                        <!-- </form> -->
                             
                             
                             <!-- <a href="/index.html" class="btn btn-facebook btn-user btn-block">
                                 <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
                             </a> -->
-                        </form>
+                        
 
                         <!-- Pending Requests Card Example -->
                         
-                    </div>
+                    
 
                     <!-- Content Row -->
 
