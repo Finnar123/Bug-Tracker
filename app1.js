@@ -31,7 +31,6 @@ let createTicketMistake = "";
 //  updates ( make an update page pass in ticket id or project id ) 
 // add the times projects and tickets are created
 // ticket priority , ticket status
-// add create project and create ticket mistakes
 
 
 
