@@ -520,7 +520,7 @@ app.get('/editproject', isAuth, async (req,res) => {
 
     let project = await projectModel.findOne({ id: globalprojectid });
 
-    res.render("editproject.ejs", {name: user.username, project: project})
+    res.render("editproject.ejs", {user: user, project: project})
     
 
 
@@ -790,6 +790,52 @@ app.post('/deleteticket', async (req,res) => {
 
 })
 
+
+// EDIT TICKET
+
+app.get('/editticket', isAuth, async (req,res) => {
+
+    if(globalticketid == "" || globalemail == "")
+    {
+        res.redirect('/index');
+    }
+
+    let user = await userModel.findOne({ email: globalemail });
+
+    let ticket = await ticketModel.findOne({ id: globalticketid });
+
+    res.render("editticket.ejs", {user: user, ticket: ticket})
+    
+
+
+
+});
+
+app.post('/editticket', async (req,res) => {
+
+    let { ticketname, desc, priority1, status1, tickettype } = req.body;
+
+
+
+    const response2 = await ticketModel.findOneAndUpdate(
+        {
+            id: globalticketid,
+        },
+        {
+            $set:{
+                name: ticketname,
+                description: desc,
+                priority: priority1,
+                status: status1,
+                type: tickettype,
+                timeupdated: getToday(),
+        }
+        })
+
+
+    // res.redirect('/ticket');
+    res.redirect('/ticket');
+})
 
 // REMOVE TICKET MEMBER 
 

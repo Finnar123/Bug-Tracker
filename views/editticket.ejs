@@ -9,19 +9,18 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Bug Tracker </title>
+    <title>Bug Tracker</title>
 
-    <!-- Custom fonts for this template -->
+    <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
-    <!-- Custom styles for this template -->
+    <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this page -->
-    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    
 
 </head>
 
@@ -38,14 +37,14 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Bug Tracker </div>
+                <div class="sidebar-brand-text mx-3"> Bug Tracker </div>
             </a>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="/index">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
@@ -85,7 +84,7 @@
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Tickets:</h6>
+                        <h6 class="collapse-header">Ticket:</h6>
                         <a class="collapse-item" href="/createtic">Create Ticket</a>
                         <a class="collapse-item" href="utilities-border.html">Browse Tickets</a>
                         <a class="collapse-item" href="utilities-animation.html">Not sure</a>
@@ -111,6 +110,12 @@
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
+                        <!-- <h6 class="collapse-header">Login Screens:</h6>
+                        <a class="collapse-item" href="login.html">Login</a>
+                        <a class="collapse-item" href="register.html">Register</a>
+                        <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
+                        <div class="collapse-divider"></div> -->
+                        <h6 class="collapse-header">Other Pages:</h6>
                         <a class="collapse-item" href="404.html">404 Page</a>
                         <a class="collapse-item" href="blank.html">Blank Page</a>
                     </div>
@@ -152,11 +157,9 @@
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
                     <!-- Sidebar Toggle (Topbar) -->
-                    <form class="form-inline">
-                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                            <i class="fa fa-bars"></i>
-                        </button>
-                    </form>
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
 
                     <!-- Topbar Search -->
                     <form
@@ -205,7 +208,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
+                                <span class="badge badge-danger badge-counter">99+</span>
                             </a>
                             <!-- Dropdown - Alerts -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -221,18 +224,7 @@
                                     </div>
                                     <div>
                                         <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 7, 2019</div>
-                                        $290.29 has been deposited into your account!
+                                        <span class="font-weight-bold">lets get started</span>
                                     </div>
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
@@ -243,78 +235,12 @@
                                     </div>
                                     <div>
                                         <div class="small text-gray-500">December 2, 2019</div>
-                                        Spending Alert: We've noticed unusually high spending for your account.
+                                        bro
                                     </div>
                                 </a>
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                             </div>
                         </li>
-
-                        <!-- Nav Item - Messages -->
-                        <!-- <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-envelope fa-fw"></i>
-                                Counter - Messages
-                                <span class="badge badge-danger badge-counter">7</span>
-                            </a>
-                            Dropdown - Messages
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="messagesDropdown">
-                                <h6 class="dropdown-header">
-                                    Message Center
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_1.svg"
-                                            alt="...">
-                                        <div class="status-indicator bg-success"></div>
-                                    </div>
-                                    <div class="font-weight-bold">
-                                        <div class="text-truncate">Hi there! I am wondering if you can help me with a
-                                            problem I've been having.</div>
-                                        <div class="small text-gray-500">Emily Fowler · 58m</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_2.svg"
-                                            alt="...">
-                                        <div class="status-indicator"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">I have the photos that you ordered last month, how
-                                            would you like them sent to you?</div>
-                                        <div class="small text-gray-500">Jae Chun · 1d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_3.svg"
-                                            alt="...">
-                                        <div class="status-indicator bg-warning"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Last month's report looks great, I am very happy with
-                                            the progress so far, keep up the good work!</div>
-                                        <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
-                                            alt="...">
-                                        <div class="status-indicator bg-success"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Am I a good boy? The reason I ask is because someone
-                                            told me that people say this to all dogs, even if they aren't good...</div>
-                                        <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-                            </div>
-                        </li> -->
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -322,13 +248,14 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%= user.username %> </span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%= user.username %></span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
+                                <!-- PROFILE PROFILE -->
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
@@ -358,116 +285,126 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Ticket <%= ticket.name %>
-                        <a href="/editticket" class="btn btn-primary" type="button">
-                            <i style="font-size:24px" class="fa">&#xf044;</i>
-                        </a>
-                    </h1>
-                    <p class="mb-4"> Owner: <%= ticket.owner %></p>
-                    <hr>
-                    <p class="mb-4">Project Name: <%= project.name %></p>
-                    
-                    <p class="mb-4">Project Id: <%= ticket.projectid %></p>
-                    <hr>
-                    <p class="mb-4">Ticket Id: <%= ticket.id %></p>
-                    <p class="mb-4">Ticket Status: <%= ticket.status %></p>
-                    <p class="mb-4">Ticket Priority: <%= ticket.priority %></p>
-                    <p class="mb-4">Ticket Type: <%= ticket.type %></p>
-                    <hr>
-                    <p class="mb-4">Description: <%= ticket.description %></p>
-                    <p class="mb-4">Time Created: <%= ticket.timecreated %></p>
-                    <p class="mb-4">Last Time Update: <%= ticket.timeupdated %></p>
-
-
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Comments: </h6>
-                        </div>
-                        
-                        <div class="card-body">
-                        </div>
+                    <div class="col-lg-6 mb-4">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Edit Ticket</h1>
+                        <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
                     </div>
 
-                    <% if(user.email == ticket.owner) { %>
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Add member: </h6>
-                        </div>
+                    <!-- Content Row -->
+                    
+
+                        <!-- Earnings (Monthly) Card Example -->
+
+
+                        <!--example 
                         
-                        <div class="card-body">
+                        <div class="col-lg-6 mb-4">
+                                    <div class="card bg-secondary text-white shadow">
+                                        <div class="card-body">
+                                            Secondary
+                                            <div class="text-white-50 small">#858796</div>
+                                        </div>
+                                    </div>
+                                </div>
+                        -->
 
-                            <form action="/addticketmember" method="POST">
-                                <select style="width: 400px;height:50px; font-size:25px;"class="m-0 font-weight-bold text-primary" name="<%= ticket.id %>">
+                        <% if(ticket.owner == user.email) { %>
+                        <form action="/editticket" method="POST">
 
-                                    <% for(var i = 0; i < project.members.length; i++){ %>
-                                    <option value="<%= project.members[i] %>"><%= project.members[i] %></option>
-                                    <% } %>
+
+                            
+                                <h1 class="h3 mb-0 text-gray-800">Name:</h1>
+                                <input style="width: 500px;height: 50px;font-size: 25px;" type="text" value="<%= ticket.name %>" name="ticketname" />
+
+                                
+
+                                <h1 class="h3 mb-0 text-gray-800">Description:</h1><input style="width: 500px;height: 50px;font-size: 25px;" name="desc" type="text" value="<%= ticket.description %>"/>
+
+                                <p class="mb-4"> Priority: 
+                                </p>
+                                <select style="width: 300px;height:40px; font-size:20px;"class="m-0 font-weight-bold text-primary" name="priority1">                                 
+                                    <option value="Low"> Low </option>
+                                    <option value="Medium"> Medium </option>
+                                    <option value="High"> High </option>
+                                    
                                 </select>
+
+                                <p class="mb-4"> Status: 
+                                </p>
+                                <select style="width: 300px;height:40px; font-size:20px;"class="m-0 font-weight-bold text-primary" name="status1">                                 
+                                    <option value="Open"> Open </option>
+                                    <option value="Closed"> Closed</option>
+                                    
+                                </select>
+
+
+                                <p class="mb-4"> Ticket Type: 
+                                </p>
+
+                                <select style="width: 300px;height:40px; font-size:20px;"class="m-0 font-weight-bold text-primary" name="tickettype">
+
+                                    <option value="Bug">Bug</option>
+                                    <option value="Task">Task</option>
+                                    <option value="Subtask">Subtask</option>
+                                    <option value="Change">Change</option>
+                                    <option value="Incident">Incident </option>
+                                    <option value="New feature">New feature</option>
+                                    <option value="Support">Support</option>
+                                    <option value="Problem">Problem</option>
+                                    
+                                </select>
+
+
+                            <a href="/ticket" class="btn btn-primary btn-user btn-block">
+                                Cancel
+                            </a>                                
+                            <button type="submit" class="btn btn-primary btn-user btn-block">
+                                Edit
+                        </button>
+                    </div>
+                </form>
+                <% } %>
+
+                        <!-- </form> -->
+                            
+                            
+                            <!-- <a href="/index.html" class="btn btn-facebook btn-user btn-block">
+                                <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
+                            </a> -->
+                        
+
+                        <!-- Pending Requests Card Example -->
+                        
+                    
+
+                    <!-- Content Row -->
+
+                    <div class="row">
+
+                    
+                        
+                    
+
+                    <!-- Content Row -->
+                    
+
+                        <!-- Content Column -->
+                        <div class="col-lg-6 mb-4">
+
+                            <!-- Project Card Example -->
+                            
+                            </div>
+                        </div>
+                        <div class="row">
                             
 
-                            <button type="submit" class="btn btn-primary btn-user btn-block" style='width:200px; float: right; '>
-                                Add member
-                            </button>
+                        <div class="col-lg-6 mb-4">
 
-                        </form>
-                    </div>
-                </div>
-                        <% } %>
-
-                </div>
-
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Members List: </h6>
-                        
-                    </div>
-
-                    <form action="/removeticketmember" method="POST">
-
-
-                
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="datatable" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        
-                                        <th>Email</th>
-                                        <th>Remove</th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        
-                                        <th>Email</th>
-                                        <th>Remove</th> 
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    <td> <%= ticket.members[0] %></td>
-                                    <td></td>
-                                    <% for(var i = 1; i < ticket.members.length; i++) { %>
-                                        <tr>
-                                            
-                                            <td><%= ticket.members[i] %></td>
-
-                                            <td>
-                                                <% if(ticket.owner == user.email){ %>
-                                                
-                                                    <button  class="btn btn-primary" type="submit" name='<%= ticket.members[i] %>"<%= ticket.id %>'>	&#10060; </button>
-                                                    
-                                                    <% } %>
-                                            </td>
-
-                                        </tr>
-                                        <% } %>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
 
-                </form>
                 </div>
                 <!-- /.container-fluid -->
 
@@ -510,8 +447,8 @@
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                     <form action="/logout" method="POST">
-                        <button class="btn btn-primary" >logout</button>
-                        </form>
+                    <button class="btn btn-primary" >logout</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -519,22 +456,24 @@
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
-
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-    
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
+    <script src="js/demo/chart-area-demo.js"></script>
+    <script src="js/demo/chart-pie-demo.js"></script>
+    
+    
+    
+    <script src="indexhandler.js"></script>
 
 </body>
 
