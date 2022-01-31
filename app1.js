@@ -27,9 +27,7 @@ let createTicketMistake = "";
 
 // TASKS
 
-// make a comment section for tickets ( hardest ) 
-//  updates ( make an update page pass in ticket id or project id ) 
-// 
+// make a comment section for tickets ( hardest )
 
 function getToday(){
     var today = new Date();
@@ -440,7 +438,7 @@ app.post('/createproj', async (req,res) => {
         privateVar = true;
     }
 
-    if(projname == null || desc == null)
+    if(projname == null || projname == "" || desc == null || desc == "")
     {
         createProjMistake = "Please enter a project name and description!";
         res.redirect("/createproj")
@@ -643,12 +641,13 @@ app.post('/createtic', async (req,res) => {
 
     const { projid, ticname, desc, priority, tickettype} = req.body;
 
-    if(projid == null || desc == null || ticname == null || priority == null || tickettype == null)
+    if(projid == null || desc == null || ticname == null || projid == "" || desc=="" || ticname == "" )
     {
         createTicketMistake = "Please fill all the fields!"
         res.redirect("/createtic");
         // res.render("createtic.ejs", {name: user.username})
     }
+    console.log();
 
     let project = await projectModel.findOne({ id: projid})
 
@@ -667,7 +666,7 @@ app.post('/createtic', async (req,res) => {
 
     // portalspace
 
-    sametime = getToday();
+    let sametime = getToday();
 
     const response2 = await projectModel.findOneAndUpdate(
         {

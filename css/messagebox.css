@@ -1,0 +1,21 @@
+.messageContainer {
+    width: 450px;
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.actualmessage {
+    background-color: #4e73df;
+    padding: 10px;
+    color: white;
+    width: fit-content;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.otherusermessage {
+    margin-left: auto;
+    background-color: dodgerblue;
+    color: white;
+}
