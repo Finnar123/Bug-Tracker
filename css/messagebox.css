@@ -1,8 +1,10 @@
 .messageContainer {
-    width: 450px;
+    width: 100%;
     height: 50vh;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    overflow-y: scroll;
 }
 
 .actualmessage {

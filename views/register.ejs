@@ -55,9 +55,12 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <input type="password" class="form-control form-control-user"
-                                            id="exampleRepeatPassword" placeholder="Repeat Password">
+                                            id="exampleRepeatPassword" name="repeatpassword" placeholder="Repeat Password">
                                     </div>
                                 </div>
+                                <p class="mb-4" style="color:red;">
+                                    <%= mistake %>
+                                </p>
                                 
                                 <!-- <a href="/login" class="btn btn-primary btn-user btn-block">
                                     Register Account

@@ -15,6 +15,7 @@ const ticketModel = require('./models/Tickets')
 const joinReqModel = require('./models/JoinRequests')
 const archiveticketModel = require('./models/archivedtickets')
 const archiveprojectModel = require('./models/archivedprojects')
+const commentsModel = require("./models/Comments")
 
 let globalemail = "";
 let globalprojectid = "";
@@ -24,6 +25,7 @@ let joinProjMistake = "";
 let loginMistake = "";
 let createProjMistake = "";
 let createTicketMistake = "";
+let registerMistake = "";
 
 // TASKS
 
@@ -35,6 +37,13 @@ function getToday(){
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         return date + " " + time;
 }
+
+function getTime(){
+    var today = new Date();
+    var time = today.getHours() + ":" + today.getMinutes();
+    return time;
+}
+
 
 mongoose.connect(mongoURI).then((res) => {
     console.log("MongoDB Connected");
@@ -260,12 +269,10 @@ app.post('/joinrequests',  async (req,res) => {
             }
         )
 
-        await joinReqModel.deleteOne({ _id: pending.substring(6) });
-
     
         const response2 = await projectModel.findOneAndUpdate(
             {
-                id: projectid,
+                id: pendrequest.projectid,
             },
             {
                 $set:{
@@ -274,6 +281,7 @@ app.post('/joinrequests',  async (req,res) => {
             })
 
 
+        await joinReqModel.deleteOne({ _id: pending.substring(6) });
     }
     
 
@@ -594,6 +602,10 @@ app.get('/ticket', isAuth, async (req,res) => {
         return res.redirect('/login');
     }
 
+    if(globalticketid == "")
+    {
+        res.redirect('/index');
+    }
 
     let ticket = await ticketModel.findOne({ id: globalticketid });
 
@@ -604,10 +616,11 @@ app.get('/ticket', isAuth, async (req,res) => {
         return res.redirect('/index');
     }
 
+    let comments = await commentsModel.findOne({ ticketid: ticket.id });
 
     if(user && ticket)
     {
-        res.render("ticket.ejs", {user: user, ticket: ticket, project: project});
+        res.render("ticket.ejs", {user: user, ticket: ticket, project: project, comments: comments});
     }else
     {
         res.redirect("/login")
@@ -616,6 +629,40 @@ app.get('/ticket', isAuth, async (req,res) => {
 })
 
 
+// Comment section for tickets
+
+app.post('/sendcomment', async(req,res) => {
+
+    let thecomment = req.body.thecomment;
+
+    
+    const response = await commentsModel.findOneAndUpdate(
+        {
+            ticketid: globalticketid,
+        },
+        {
+            $push: {
+                user: globalemail,
+                comment: thecomment,
+                timesent: getTime(),
+            }
+        }
+    )
+
+    const response2 = await projectModel.findOneAndUpdate(
+        {
+            id: globalticketid,
+        },
+        {
+            $set:{
+                timeupdated: getToday(),
+        }
+        })
+
+    res.redirect('/ticket');
+
+})
+
 // goes to create ticket page ( has to have an project attracted)
 app.get('/createtic', isAuth, async (req,res) => {
 
@@ -623,7 +670,7 @@ app.get('/createtic', isAuth, async (req,res) => {
 
     if(user)
     {
-        res.render("createtic.ejs", {name: user.username, mistake: createTicketMistake})
+        res.render("createtic.ejs", {name: user.username, mistake: createTicketMistake, id: globalprojectid })
     }else
     {
         res.redirect("/login")
@@ -694,6 +741,12 @@ app.post('/createtic', async (req,res) => {
     })
 
     await ticket1.save();
+
+    const comment1 = new commentsModel({
+        ticketid: ticket1.id,
+    })
+
+    await comment1.save();
 
     globalticketid = ticket1.id;
 
@@ -953,17 +1006,24 @@ app.post('/addticketmember', async (req,res) => {
 
 app.get('/register', (req,res) => {
 
-    return res.render("register.ejs")
+    return res.render("register.ejs", {mistake: registerMistake});
 
 })
 
 
 app.post("/register", async (req,res) => {
-    const { username, email, password } = req.body;
+    const { username, email, password, repeatpassword } = req.body;
 
     let user = await userModel.findOne({email: email});
 
     if(user){
+        registerMistake = "This user already exists.";
+        return res.redirect("/register");
+    }
+
+    if(password != repeatpassword)
+    {
+        registerMistake = "Repeated password does not match password.";
         return res.redirect("/register");
     }
 
@@ -983,7 +1043,7 @@ app.post("/register", async (req,res) => {
 
 app.get('/login', (req,res) => {
 
-    
+    registerMistake = "";
     res.render("login.ejs", {mistake: loginMistake})
 })
 

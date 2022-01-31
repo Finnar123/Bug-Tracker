@@ -104,20 +104,6 @@
                 Maintain
             </div>
 
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Pages</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="404.html">404 Page</a>
-                        <a class="collapse-item" href="blank.html">Blank Page</a>
-                    </div>
-                </div>
-            </li>
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
@@ -391,23 +377,38 @@
 
                             <div class="messageContainer">
 
+                                
+                                <% for(var i = 0; i < comments.user.length; i++) { 
+
+                                if(user.email == comments.user[i]) { %>
                                 <p class="actualmessage">
-                                    Hi
+                                    <%= comments.comment[i] %>
+                                    
                                 </p>
-
+                                <span> Sent <%= comments.timesent[i] %> </span>
+                                <% } else { %>
                                 <p class="actualmessage otherusermessage">
-                                    Hello
+                                    <%= comments.comment[i] %>
+                                    
                                 </p>
-
+                                <span style=" margin-left: auto;">Sent <%= comments.timesent[i] %> </span>
+                                <% } } %>
                                 
                             </div>
 
+
                             <hr>
+                            <form action="/sendcomment" method="POST">
+
+                            
                             <input type="text" style="display: block;
-                            width: 100%;" name="">
+                            width: 100%;" name="thecomment">
                             <button type="submit" class="btn btn-primary btn-user btn-block" style='width:200px; float: right; '>
                                 Send
                             </button>
+
+                        </form>
+
                         </div>
                     </div>
 
