@@ -1002,6 +1002,12 @@ app.post('/addticketmember', async (req,res) => {
 //     }
 // })
 
+// FORGOT PASSWORD 
+
+app.get('/forgot-password', (req,res) => {
+    return res.render("forgot-password.ejs");
+})
+
 // Authentication 
 
 app.get('/register', (req,res) => {
