@@ -419,7 +419,7 @@
                         <div class="card-body">
 
                             <form action="/addticketmember" method="POST">
-                                <select style="width: 400px;height:50px; font-size:25px;"class="m-0 font-weight-bold text-primary" name="<%= ticket.id %>">
+                                <select style="width: 100%;height:50px; font-size:25px;"class="m-0 font-weight-bold text-primary" name="<%= ticket.id %>">
 
                                     <% for(var i = 0; i < project.members.length; i++){ %>
                                     <option value="<%= project.members[i] %>"><%= project.members[i] %></option>
