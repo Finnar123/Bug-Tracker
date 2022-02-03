@@ -634,6 +634,10 @@ app.get('/ticket', isAuth, async (req,res) => {
 app.post('/sendcomment', async(req,res) => {
 
     let thecomment = req.body.thecomment;
+    if(thecomment == "")
+    {
+        return res.redirect("/ticket");
+    }
 
     
     const response = await commentsModel.findOneAndUpdate(
