@@ -27,9 +27,12 @@ let createProjMistake = "";
 let createTicketMistake = "";
 let registerMistake = "";
 
+
 // TASKS
 
-// make a comment section for tickets ( hardest )
+// make forgot password functionality
+// notification system
+// remove error junk from console
 
 function getToday(){
     var today = new Date();
@@ -109,10 +112,37 @@ app.get('/index', isAuth, async (req,res) => {
     {
         let allprojects = await projectModel.find({ members: user.email});
 
+        let alltickets = await ticketModel.find({ members: user.email});
+
+        let types = new Array();
+        types[0] = new Array('Bug',0);
+        types[1] = new Array('Task',0);
+        types[2] = new Array('Subtask',0);
+        types[3] = new Array('Change',0);
+        types[4] = new Array('Incident',0);
+        types[5] = new Array('New feature',0);
+        types[6] = new Array('Support',0);
+        types[7] = new Array('Problem',0);
+
+    for(let x = 0; x < 8; x++)
+    {
+        for(let i = 0; i < alltickets.length; i++)
+        {
+            if(types[x][0] == alltickets[i].type)
+            {
+                types[x][1]++;
+            }
+        }
+    }
+    types.sort((function(index){
+        return function(a, b){
+            return (a[index] === b[index] ? 0 : (a[index] < b[index] ? -1 : 1));
+        };})(1)); 
+
+
         let allrequests = await joinReqModel.find({ account: globalemail });
 
-
-        res.render("index.ejs", {name: user.username, projects: allprojects.length,  pending: allrequests.length})
+        res.render("index.ejs", {name: user.username, projects: allprojects,  pending: allrequests.length, types: types})
     }else
     {
         res.redirect("/login")
@@ -698,7 +728,6 @@ app.post('/createtic', async (req,res) => {
         res.redirect("/createtic");
         // res.render("createtic.ejs", {name: user.username})
     }
-    console.log();
 
     let project = await projectModel.findOne({ id: projid})
 

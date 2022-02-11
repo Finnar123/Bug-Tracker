@@ -2,14 +2,27 @@
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
 
+var firstlabel = document.getElementById('pie1').innerText;
+var twolabel = document.getElementById('pie2').innerText;
+var thirdlabel = document.getElementById('pie3').innerText;
+
+var firstnum = document.getElementById('pie1').title;
+var secondnum = document.getElementById('pie2').title;
+var thirdnum = document.getElementById('pie3').title;
+
+
+console.log(firstnum);
+
+// grab the value ( where i put the number ) 
+
 // Pie Chart Example
 var ctx = document.getElementById("myPieChart");
 var myPieChart = new Chart(ctx, {
   type: 'doughnut',
   data: {
-    labels: ["Direct", "Referral", "Social"],
+    labels: [firstlabel, twolabel, thirdlabel],
     datasets: [{
-      data: [55, 30, 15],
+      data: [firstnum, secondnum, thirdnum],
       backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
       hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
       hoverBorderColor: "rgba(234, 236, 244, 1)",
