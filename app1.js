@@ -32,7 +32,8 @@ let registerMistake = "";
 
 // make forgot password functionality
 // notification system
-// remove error junk from console
+// refractor the comment section (use doms instead of post)
+
 
 function getToday(){
     var today = new Date();

@@ -11,8 +11,6 @@ var secondnum = document.getElementById('pie2').title;
 var thirdnum = document.getElementById('pie3').title;
 
 
-console.log(firstnum);
-
 // grab the value ( where i put the number ) 
 
 // Pie Chart Example
