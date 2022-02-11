@@ -300,19 +300,37 @@
 
                                 <p class="mb-4"> Priority: 
                                 </p>
-                                <select style="width: 300px;height:40px; font-size:20px;"class="m-0 font-weight-bold text-primary" name="priority1">                                 
+                                <select style="width: 300px;height:40px; font-size:20px;"class="m-0 font-weight-bold text-primary" name="priority1">                              <option value="<%= ticket.priority %>"> <%= ticket.priority %> </option>
+
+                                    <% if(ticket.priority != "Low") { %>
                                     <option value="Low"> Low </option>
+                                    <% } %>
+
+
+                                    <% if(ticket.priority != "Medium") { %>
                                     <option value="Medium"> Medium </option>
+                                    <% } %>
+
+                                    <% if(ticket.priority != "High") { %>
                                     <option value="High"> High </option>
-                                    
+                                    <% } %>
+
                                 </select>
 
                                 <p class="mb-4"> Status: 
                                 </p>
-                                <select style="width: 300px;height:40px; font-size:20px;"class="m-0 font-weight-bold text-primary" name="status1">                                 
+                                <select style="width: 300px;height:40px; font-size:20px;"class="m-0 font-weight-bold text-primary" name="status1">                                <option value="<%= ticket.status %>"> <%= ticket.status %> </option> 
+
+                                    <% if(ticket.status != "Open") { %>
                                     <option value="Open"> Open </option>
+                                    <% } %>
+
+
+                                    <% if(ticket.status != "Closed") { %>
                                     <option value="Closed"> Closed</option>
-                                    
+                                    <% } %>
+
+
                                 </select>
 
 
@@ -321,15 +339,34 @@
 
                                 <select style="width: 300px;height:40px; font-size:20px;"class="m-0 font-weight-bold text-primary" name="tickettype">
 
+                                    <option value="<%= ticket.type %>"> <%= ticket.type %> </option>
+
+                                    <% if(ticket.type != "Bug") { %>
                                     <option value="Bug">Bug</option>
-                                    <option value="Task">Task</option>
-                                    <option value="Subtask">Subtask</option>
-                                    <option value="Change">Change</option>
-                                    <option value="Incident">Incident </option>
-                                    <option value="New feature">New feature</option>
-                                    <option value="Support">Support</option>
-                                    <option value="Problem">Problem</option>
                                     
+
+                                    <% } if(ticket.type != "Task") { %>
+                                    <option value="Task">Task</option>
+
+                                    <% } if(ticket.type != "Subtask") { %>
+                                    <option value="Subtask">Subtask</option>
+
+                                    <% } if(ticket.type != "Change") { %>
+                                    <option value="Change">Change</option>
+
+                                    <% } if(ticket.type != "Incident") { %>
+                                    <option value="Incident">Incident </option>
+
+                                    <% } if(ticket.type != "New feature") { %>
+                                    <option value="New feature">New feature</option>
+
+                                    <% } if(ticket.type != "Support") { %>
+                                    <option value="Support">Support</option>
+
+                                    <% } if(ticket.type != "Problem") { %>
+                                    <option value="Problem">Problem</option>
+                                    <% } %>
+
                                 </select>
 
 
