@@ -1136,7 +1136,10 @@ app.get('/reset-password/:useremail/:token', async (req,res) => {
     }catch(err)
     {
         console.log(err);
-        res.redirect('/login');
+
+
+        forgotMistake = "The link has expired."
+        res.redirect('/forgot-password');
     }
 
 
