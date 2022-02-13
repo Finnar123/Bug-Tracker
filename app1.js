@@ -7,6 +7,8 @@ const mongoose = require("mongoose");
 
 const app = express();
 
+const jwt = require('jsonwebtoken')
+
 const mongoURI = "mongodb://localhost:27017/sessions";
 
 const userModel = require('./models/User')
@@ -26,11 +28,18 @@ let loginMistake = "";
 let createProjMistake = "";
 let createTicketMistake = "";
 let registerMistake = "";
+let forgotMistake = "";
+
+
+
+const JWT_SECRET = "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY0NDcxOTczMSwiaWF0IjoxNjQ0NzE5NzMxfQ.8ernD8g6Tp214lNOGRT-jSBsZp50wnJU2z5fNcVezo0";
+
 
 
 // TASKS
 
 // make forgot password functionality
+// make the script email link to users
 // notification system
 // refractor the comment section (use doms instead of post)
 
@@ -68,6 +77,8 @@ app.use("/js", express.static('./js/'));
 app.use("/vendor", express.static('./vendor/'));
 
 app.use(express.urlencoded({ extended: true }))
+
+
 
 
 
@@ -587,41 +598,6 @@ app.post('/editproject', async (req,res) => {
 });
 
 
-
-//  allows users to go to any project thats on the list
-// app.post('/projects', async (req,res) => {
-    
-//     let enterid = req.body.enterid;
-    
-
-//     let user = await userModel.findOne({ email: globalemail });
-
-//     let project = await projectModel.findOne({ id: enterid });
-
-//     if(!project)
-//     {
-//         res.redirect("/projects");
-//     }
-
-//     if(project.owner != user.email && !(project.members.includes(user.email))){
-
-//         return res.redirect("/projects");
-//     }
-
-
-//     globalprojectid = project.id;
-
-//     res.redirect("/project")
-
-    
-// })
-
-
-// Tickets 
-
-// tasks for tickets: make checks so people can't go to other peoples tickets
-
-
 // goes to one singular ticket
 app.get('/ticket', isAuth, async (req,res) => {
 
@@ -1002,45 +978,6 @@ app.post('/addticketmember', async (req,res) => {
 
 })
 
-// // allows users to go to tickets in the list
-// app.post('/tickets', async (req,res) => {
-    
-//     let enterid = req.body.enterid;
-//     enterid = enterid.toString();
-
-//     let user = await userModel.findOne({ email: globalemail });
-//     // let alltickets = await ticketModel.find({ owner: user.email});
-
-//     let ticket = await ticketModel.findOne({ id: enterid });
-
-//     console.log(enterid);
-//     console.log(ticket);
-
-//     // let project = await projectModel.findOne({ id: ticket.id})
-
-//     if(ticket.owner == user.email || ticket.members.includes(user.email))
-//     {
-//         if(ticket)
-//         {
-//             globalticketid = ticket.id;
-//             return res.redirect("/ticket")
-//             
-//         }else{
-//             return res.redirect("/tickets")
-//             
-//         }
-//     }else
-//     {
-//         return res.redirect("/tickets")
-//         
-//     }
-// })
-
-// FORGOT PASSWORD 
-
-app.get('/forgot-password', (req,res) => {
-    return res.render("forgot-password.ejs");
-})
 
 // Authentication 
 
@@ -1129,6 +1066,129 @@ app.post('/logout', (req,res) => {
     joinProjMistake = "";
     createProjMistake = "";
     createTicketMistake = "";
+
+})
+
+
+// FORGOT PASSWORD 
+
+
+app.get('/forgot-password', async (req,res) => {
+    return res.render("forgot-password.ejs", {mistake: forgotMistake});
+})
+
+
+app.post('/forgot-password', async (req,res) => {
+    
+    const { email2 } = req.body;
+
+
+    const user = await userModel.findOne({email: email2});
+
+    if(!user)
+    {
+        forgotMistake = "That email does not exist!"
+        return res.redirect('/forgot-password');
+    }
+    
+
+    const secret = JWT_SECRET + user.password;
+    const payload = {
+        email: user.email,
+    }
+
+    const token = jwt.sign(payload, secret, {expiresIn: '15m'});
+    const link = `http://localhost:5000/reset-password/${user.email}/${token}`
+    console.log(link);
+
+
+
+    // link email doesn't work yet
+
+    forgotMistake = "Success! The link has been sent to your email!";
+    res.redirect('/forgot-password')
+
+})
+
+app.get('/reset-password/:useremail/:token', async (req,res) => {
+
+    const { useremail, token } = req.params;
+
+    
+    // Check if this user exist in database
+    const user = await userModel.findOne({email: useremail});
+
+    if(!user)
+    {
+
+        return res.redirect('/forgot-password');
+    }
+
+
+    const secret = JWT_SECRET + user.password;
+
+    try{
+
+        const payload = jwt.verify(token, secret)
+
+        return res.render('reset-password.ejs', {email: user.email, token: token});
+
+    }catch(err)
+    {
+        console.log(err);
+        res.redirect('/login');
+    }
+
+
+})
+
+
+app.post('/reset-password/:useremail/:token', async (req,res) => {
+    
+
+    const { useremail, token } = req.params;
+
+    const { password1 , password2} = req.body;
+
+
+    const user = await userModel.findOne({email: useremail});
+
+    if(!user)
+    {
+        
+        return res.redirect('/forgot-password');
+    }
+
+    const secret = JWT_SECRET + user.password;
+
+    try {    
+
+        const payload = jwt.verify(token, secret);
+
+        if(password1 != password2)
+        {
+            return res.redirect('/reset-password/:useremail/:token');
+        }
+
+        const hashedPsw = await bcrypt.hash(password1, 12);
+
+        const response = await userModel.findOneAndUpdate(
+            {
+                email: user.email,
+            },
+            {
+                $set: {
+                    password: hashedPsw
+                }
+            }
+        )
+
+        res.redirect('/login');
+
+    }catch(err){
+
+        console.log(err);
+    }
 
 })
 
