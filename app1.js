@@ -3,7 +3,10 @@ const bcrypt = require("bcrypt");
 const session = require("express-session");
 const MongoDBSession = require('connect-mongodb-session')(session);
 
+const nodemailer = require('nodemailer');
+
 const mongoose = require("mongoose");
+
 
 const app = express();
 
@@ -1078,6 +1081,7 @@ app.get('/forgot-password', async (req,res) => {
 })
 
 
+
 app.post('/forgot-password', async (req,res) => {
     
     const { email2 } = req.body;
@@ -1099,16 +1103,48 @@ app.post('/forgot-password', async (req,res) => {
 
     const token = jwt.sign(payload, secret, {expiresIn: '15m'});
     const link = `http://localhost:5000/reset-password/${user.email}/${token}`
-    console.log(link);
 
 
+    let transporter = nodemailer.createTransport({
+        host: "smtp-mail.outlook.com",
+        port: 587,
+        secure: false, // true for 465, false for other ports
+        auth: {
+        user: 'bugtracker89@hotmail.com', 
+        pass: 'itbebugging78', 
+        },
+        tls:{
+            rejectUnauthorized: false,
+        }
+    });
 
-    // link email doesn't work yet
+    try{
+
+   
+    let info = await transporter.sendMail({
+        from: 'bugtracker89@hotmail.com', // sender address
+        to: `${user.email}`, // list of receivers
+        subject: "Bug Tracker Reset Password", // Subject line
+        text: `${link}`, // plain text body
+        html: `<b>Here is the link to reset your password: ${link} 
+        It expires in 15 minutes.</b>`, // html body
+      });
+
+      console.log("Message sent: %s", info.messageId);
+    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+
+    }catch(err){
+        console.log(err);
+    }
+
+
 
     forgotMistake = "Success! The link has been sent to your email!";
     res.redirect('/forgot-password')
 
 })
+
+
 
 app.get('/reset-password/:useremail/:token', async (req,res) => {
 
@@ -1194,6 +1230,7 @@ app.post('/reset-password/:useremail/:token', async (req,res) => {
     }
 
 })
+
 
 process.on('uncaughtException', function (err) {
     console.log(err);
