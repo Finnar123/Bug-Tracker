@@ -34,17 +34,12 @@ let registerMistake = "";
 let forgotMistake = "";
 
 
-
 const JWT_SECRET = "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY0NDcxOTczMSwiaWF0IjoxNjQ0NzE5NzMxfQ.8ernD8g6Tp214lNOGRT-jSBsZp50wnJU2z5fNcVezo0";
-
 
 
 // TASKS
 
-// make forgot password functionality
-// make the script email link to users
 // notification system
-// refractor the comment section (use doms instead of post)
 
 
 function getToday(){
@@ -80,10 +75,6 @@ app.use("/js", express.static('./js/'));
 app.use("/vendor", express.static('./vendor/'));
 
 app.use(express.urlencoded({ extended: true }))
-
-
-
-
 
 
 app.use(session({
