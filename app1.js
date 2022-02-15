@@ -40,6 +40,8 @@ const JWT_SECRET = "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N
 // TASKS
 
 // notification system
+// notify user when: project member adds ticket
+// a new user joins one of your project(not sure)
 
 
 function getToday(){
@@ -1127,7 +1129,7 @@ app.post('/forgot-password', async (req,res) => {
     res.redirect('/forgot-password')
 
     }catch(err){
-        
+
         console.log(err);
 
         forgotMistake = "Something went wrong sending the email!";
