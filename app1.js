@@ -1111,7 +1111,6 @@ app.post('/forgot-password', async (req,res) => {
 
     try{
 
-   
     let info = await transporter.sendMail({
         from: 'bugtracker89@hotmail.com', // sender address
         to: `${user.email}`, // list of receivers
@@ -1119,19 +1118,22 @@ app.post('/forgot-password', async (req,res) => {
         text: `${link}`, // plain text body
         html: `<b>Here is the link to reset your password: ${link} 
         It expires in 15 minutes.</b>`, // html body
-      });
+    });
 
-      console.log("Message sent: %s", info.messageId);
+    console.log("Message sent: %s", info.messageId);
     console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-
-    }catch(err){
-        console.log(err);
-    }
-
-
 
     forgotMistake = "Success! The link has been sent to your email!";
     res.redirect('/forgot-password')
+
+    }catch(err){
+        
+        console.log(err);
+
+        forgotMistake = "Something went wrong sending the email!";
+        res.redirect('/forgot-password')
+    }
+
 
 })
 
