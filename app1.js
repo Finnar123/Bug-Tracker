@@ -39,9 +39,12 @@ const JWT_SECRET = "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N
 
 // TASKS
 
+
 // notification system
 // notify user when: project member adds ticket
 // a new user joins one of your project(not sure)
+// notify when someone sends you a request
+// make a database for notifs fields: user email, topic, date
 
 
 function getToday(){
@@ -670,6 +673,8 @@ app.post('/sendcomment', async(req,res) => {
 
 })
 
+
+
 // goes to create ticket page ( has to have an project attracted)
 app.get('/createtic', isAuth, async (req,res) => {
 
@@ -1217,6 +1222,7 @@ app.post('/reset-password/:useremail/:token', async (req,res) => {
             }
         )
 
+        loginMistake = "";
         res.redirect('/login');
 
     }catch(err){

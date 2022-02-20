@@ -344,10 +344,11 @@
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Project <%= project.name %>  
                         
+                        <% if(project.owner == user.email){ %>
                         <a href="/editproject" class="btn btn-primary" type="button">
                             <i style="font-size:24px" class="fa">&#xf044;</i>
                         </a>
-                    
+                        <% } %>
 
                     </h1>
 
@@ -400,7 +401,8 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        <% if(ticket != null){ if(ticket.length != undefined)
+                                        <% if(ticket != null){
+                                            if(ticket.length != undefined)
                                         {
                                             for(var i = 0; i < ticket.length; i++) { %>
                                             <tr>
