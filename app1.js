@@ -7,7 +7,6 @@ const nodemailer = require('nodemailer');
 
 const mongoose = require("mongoose");
 
-
 const app = express();
 
 const jwt = require('jsonwebtoken')
