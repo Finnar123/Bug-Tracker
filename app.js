@@ -20,6 +20,8 @@ const joinReqModel = require('./models/JoinRequests')
 const archiveticketModel = require('./models/archivedtickets')
 const archiveprojectModel = require('./models/archivedprojects')
 const commentsModel = require("./models/Comments")
+const notifModel = require('./models/Notifs')
+
 
 let globalemail = "";
 let globalprojectid = "";
@@ -38,12 +40,9 @@ const JWT_SECRET = "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N
 
 // TASKS
 
-
 // notification system
 // notify user when: project member adds ticket
-// a new user joins one of your project(not sure)
-// notify when someone sends you a request
-// make a database for notifs fields: user email, topic, date
+
 
 
 function getToday(){
@@ -58,6 +57,16 @@ function getTime(){
     var time = today.getHours() + ":" + today.getMinutes();
     return time;
 }
+
+function formatDate(){
+
+    var today = new Date();
+
+    const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+    return `${month[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`;
+}
+
 
 
 mongoose.connect(mongoURI).then((res) => {
@@ -151,8 +160,10 @@ app.get('/index', isAuth, async (req,res) => {
 
 
         let allrequests = await joinReqModel.find({ account: globalemail });
+        let notifuser = await notifModel.findOne({ email: user.email });
 
-        res.render("index.ejs", {name: user.username, projects: allprojects,  pending: allrequests.length, types: types})
+
+        res.render("index.ejs", {name: user.username, projects: allprojects,  pending: allrequests.length, types: types, notifs: notifuser})
     }else
     {
         res.redirect("/login")
@@ -178,9 +189,12 @@ app.get('/project', isAuth, async (req,res) => {
         ticket = "";
     }
 
+    let notifuser = await notifModel.findOne({ email: user.email });
+
+
     if(user && project)
     {
-        res.render("project.ejs", {user: user, email: project.owner, id: globalprojectid, project: project, ticket: ticket})
+        res.render("project.ejs", {user: user, email: project.owner, id: globalprojectid, project: project, ticket: ticket, notifs: notifuser})
     }else
     {
         res.redirect("/login")
@@ -194,11 +208,12 @@ app.get('/project', isAuth, async (req,res) => {
 app.get('/joinproject', isAuth, async (req,res) => {
 
     let user = await userModel.findOne({ email: globalemail });
+    let notifuser = await notifModel.findOne({ email: user.email });
 
     if(user)
     {
         
-        res.render("joinproject.ejs", {name: user.username, mistake: joinProjMistake})
+        res.render("joinproject.ejs", {name: user.username, mistake: joinProjMistake, notifs: notifuser})
 
     }else
     {
@@ -247,6 +262,18 @@ app.post('/joinproject', async (req,res) => {
         })
     
         await request.save();
+
+        const response3 = await notifModel.findOneAndUpdate(
+            {
+                email: project.owner,
+            },{
+                $push:{
+                    topic: "You have been sent a join request by " + user.email + "!",
+                    timecreated: formatDate(),
+                }
+            }
+        )
+
     
         joinProjMistake = "Success! Sent the join request!";
         return res.redirect('/joinproject');
@@ -263,6 +290,7 @@ app.post('/joinproject', async (req,res) => {
 app.get('/joinrequests', isAuth, async (req,res) => {
 
     let user = await userModel.findOne({ email: globalemail });
+    let notifuser = await notifModel.findOne({ email: user.email });
 
     if(!user)
     {
@@ -270,7 +298,7 @@ app.get('/joinrequests', isAuth, async (req,res) => {
     }
     let allrequests = await joinReqModel.find({ account: globalemail });
 
-    res.render("joinrequests.ejs", {name: user.username, request: allrequests})
+    res.render("joinrequests.ejs", {name: user.username, request: allrequests, notifs: notifuser})
     
 
 })
@@ -358,6 +386,21 @@ app.post('/removeprojectmember', async (req,res) => {
         }
     )
 
+    let project = await projectModel.findOne({ id: projectid});
+
+
+        const response3 = await notifModel.findOneAndUpdate(
+            {
+                email: memberemail,
+            },{
+                $push:{
+                    topic: "You have been removed from " + project.name,
+                    timecreated: formatDate(),
+                }
+            }
+        )
+
+
 
     const response2 = await projectModel.findOneAndUpdate(
         {
@@ -397,6 +440,21 @@ app.post('/deleteproject', async (req,res) => {
         }
         })
 
+        for(let i = 0; i < project.members.length; i++)
+        {
+
+        const response3 = await notifModel.findOneAndUpdate(
+            {
+                email: project.members[i],
+            },{
+                $push:{
+                    topic: "The project " + project.name + " has been deleted!",
+                    timecreated: formatDate(),
+                }
+            }
+        )
+
+        }
 
 
 
@@ -454,11 +512,12 @@ app.post('/deleteproject', async (req,res) => {
 app.get('/createproj', isAuth, async (req,res) => {
 
     let user = await userModel.findOne({ email: globalemail });
+    let notifuser = await notifModel.findOne({ email: user.email });
 
     if(user)
     {
         
-        res.render("createproj.ejs", {name: user.username, mistake: createProjMistake})
+        res.render("createproj.ejs", {name: user.username, mistake: createProjMistake, notifs: notifuser})
     }else
     {
         res.redirect("/login")
@@ -520,12 +579,13 @@ app.post('/createproj', async (req,res) => {
 app.get('/projects', isAuth, async (req,res) => {
 
     let user = await userModel.findOne({ email: globalemail });
+    let notifuser = await notifModel.findOne({ email: user.email });
 
     if(user)
     {
         let allprojects = await projectModel.find({ members: user.email});
 
-        res.render("projects.ejs", {name: user.username, email: user.email, projects: allprojects})
+        res.render("projects.ejs", {name: user.username, email: user.email, projects: allprojects, notifs: notifuser})
     }else
     {
         res.redirect("/login")
@@ -566,7 +626,9 @@ app.get('/editproject', isAuth, async (req,res) => {
 
     let project = await projectModel.findOne({ id: globalprojectid });
 
-    res.render("editproject.ejs", {user: user, project: project})
+    let notifuser = await notifModel.findOne({ email: user.email });
+
+    res.render("editproject.ejs", {user: user, project: project, notifs: notifuser})
     
 
 
@@ -589,6 +651,7 @@ app.post('/editproject', async (req,res) => {
                 timeupdated: getToday(),
         }
         })
+
 
 
 
@@ -623,9 +686,11 @@ app.get('/ticket', isAuth, async (req,res) => {
 
     let comments = await commentsModel.findOne({ ticketid: ticket.id });
 
+    let notifuser = await notifModel.findOne({ email: user.email });
+
     if(user && ticket)
     {
-        res.render("ticket.ejs", {user: user, ticket: ticket, project: project, comments: comments});
+        res.render("ticket.ejs", {user: user, ticket: ticket, project: project, comments: comments, notifs: notifuser});
     }else
     {
         res.redirect("/login")
@@ -679,9 +744,11 @@ app.get('/createtic', isAuth, async (req,res) => {
 
     let user = await userModel.findOne({ email: globalemail });
 
+    let notifuser = await notifModel.findOne({ email: user.email });
+
     if(user)
     {
-        res.render("createtic.ejs", {name: user.username, mistake: createTicketMistake, id: globalprojectid })
+        res.render("createtic.ejs", {name: user.username, mistake: createTicketMistake, id: globalprojectid, notifs: notifuser})
     }else
     {
         res.redirect("/login")
@@ -721,10 +788,9 @@ app.post('/createtic', async (req,res) => {
     }
 
 
-    // portalspace
-
     let sametime = getToday();
 
+    // changes time
     const response2 = await projectModel.findOneAndUpdate(
         {
             id: projid,
@@ -734,6 +800,23 @@ app.post('/createtic', async (req,res) => {
                 timeupdated: sametime,
         }
         })
+
+        // sends a notif to all project members when a new ticket is created
+        for(let i = 0; i < project.members.length; i++)
+        {
+
+        const response3 = await notifModel.findOneAndUpdate(
+            {
+                email: project.members[i],
+            },{
+                $push:{
+                    topic: "A new ticket has been created by " + user.email + "!",
+                    timecreated: formatDate(),
+                }
+            }
+        )
+
+        }
 
 
     const ticket1 = new ticketModel({
@@ -771,11 +854,13 @@ app.get('/tickets', isAuth, async (req,res) => {
 
     let user = await userModel.findOne({ email: globalemail });
 
+    let notifuser = await notifModel.findOne({ email: user.email });
+
     if(user)
     {
         let alltickets = await ticketModel.find({ members: user.email});
 
-        res.render("tickets.ejs", {name: user.username, ticket: alltickets})
+        res.render("tickets.ejs", {name: user.username, ticket: alltickets, notifs: notifuser})
     }else
     {
         res.redirect("/login")
@@ -865,8 +950,9 @@ app.get('/editticket', isAuth, async (req,res) => {
     let user = await userModel.findOne({ email: globalemail });
 
     let ticket = await ticketModel.findOne({ id: globalticketid });
+    let notifuser = await notifModel.findOne({ email: user.email });
 
-    res.render("editticket.ejs", {user: user, ticket: ticket})
+    res.render("editticket.ejs", {user: user, ticket: ticket, notifs: notifuser})
     
 
 
@@ -1048,6 +1134,22 @@ app.post('/login', async (req,res) => {
 
     globalemail = user.email;
     loginMistake = "";
+
+    const notifuser = await notifModel.findOne({email: email});
+
+    if(!notifuser)
+    {
+
+    const notif = new notifModel({
+        email: email,
+        topic: "placeholder",
+        timecreated: "placeholder",
+    })
+
+    await notif.save();
+
+    }
+
 
     res.redirect("/index");
     
