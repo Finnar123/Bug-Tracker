@@ -1,3 +1,39 @@
+
+var App = {
+    globals: {
+        globalemail: "say something",
+        globalprojectid: "",
+        globalticketid:  "",
+    },
+    mistakes: {
+    joinProjMistake:"",
+    loginMistake: "",
+    createProjMistake: "",
+    createTicketMistake: "",
+    registerMistake: "",
+    forgotMistake: "",
+    }
+}
+
+
+console.log(App.globals.globalemail);
+
+
+// console.log(App.globals.globalemail);
+
+// legacy
+// let App.globals.globalemail = "";
+// let App.globals.globalprojectid = "";
+// let App.globals.globalticketid = "";
+
+// let App.mistakes.joinProjMistake = "";
+// let App.mistakes.loginMistake = "";
+// let App.mistakes.createProjMistake = "";
+// let App.mistakes.createTicketMistake = "";
+// let App.mistakes.registerMistake = "";
+// let App.mistakes.forgotMistake = "";
+
+
 // // allows users to go to tickets in the list
 // app.post('/tickets', async (req,res) => {
     

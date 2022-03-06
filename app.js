@@ -23,16 +23,21 @@ const commentsModel = require("./models/Comments")
 const notifModel = require('./models/Notifs')
 
 
-let globalemail = "";
-let globalprojectid = "";
-let globalticketid = "";
-
-let joinProjMistake = "";
-let loginMistake = "";
-let createProjMistake = "";
-let createTicketMistake = "";
-let registerMistake = "";
-let forgotMistake = "";
+var App = {
+    globals: {
+        globalemail: "say something",
+        globalprojectid: "",
+        globalticketid:  "",
+    },
+    mistakes: {
+    joinProjMistake:"",
+    loginMistake: "",
+    createProjMistake: "",
+    createTicketMistake: "",
+    registerMistake: "",
+    forgotMistake: "",
+    }
+}
 
 
 const JWT_SECRET = "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY0NDcxOTczMSwiaWF0IjoxNjQ0NzE5NzMxfQ.8ernD8g6Tp214lNOGRT-jSBsZp50wnJU2z5fNcVezo0";
@@ -40,9 +45,7 @@ const JWT_SECRET = "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N
 
 // TASKS
 
-// notification system
-// notify user when: project member adds ticket
-
+//
 
 
 function getToday(){
@@ -109,7 +112,7 @@ const isAuth = (req, res, next) => {
 
 app.get("/", async (req,res) => {
     
-    let user = await userModel.findOne({ email: globalemail });
+    let user = await userModel.findOne({ email: App.globals.globalemail });
 
     if(user)
     {
@@ -125,7 +128,7 @@ app.get("/", async (req,res) => {
 app.get('/index', isAuth, async (req,res) => {
 
 
-    let user = await userModel.findOne({ email: globalemail });
+    let user = await userModel.findOne({ email: App.globals.globalemail });
 
     if(user)
     {
@@ -159,7 +162,7 @@ app.get('/index', isAuth, async (req,res) => {
         };})(1)); 
 
 
-        let allrequests = await joinReqModel.find({ account: globalemail });
+        let allrequests = await joinReqModel.find({ account: App.globals.globalemail });
         let notifuser = await notifModel.findOne({ email: user.email });
 
 
@@ -178,11 +181,11 @@ app.get('/index', isAuth, async (req,res) => {
 app.get('/project', isAuth, async (req,res) => {
 
     
-    let user = await userModel.findOne({ email: globalemail });
+    let user = await userModel.findOne({ email: App.globals.globalemail });
 
-    let project = await projectModel.findOne({ id: globalprojectid });
+    let project = await projectModel.findOne({ id: App.globals.globalprojectid });
 
-    let ticket = await ticketModel.find({ projectid: globalprojectid });
+    let ticket = await ticketModel.find({ projectid: App.globals.globalprojectid });
 
     if(ticket == null)
     {
@@ -194,7 +197,7 @@ app.get('/project', isAuth, async (req,res) => {
 
     if(user && project)
     {
-        res.render("project.ejs", {user: user, email: project.owner, id: globalprojectid, project: project, ticket: ticket, notifs: notifuser})
+        res.render("project.ejs", {user: user, email: project.owner, id: App.globals.globalprojectid, project: project, ticket: ticket, notifs: notifuser})
     }else
     {
         res.redirect("/login")
@@ -207,13 +210,13 @@ app.get('/project', isAuth, async (req,res) => {
 
 app.get('/joinproject', isAuth, async (req,res) => {
 
-    let user = await userModel.findOne({ email: globalemail });
+    let user = await userModel.findOne({ email: App.globals.globalemail });
     let notifuser = await notifModel.findOne({ email: user.email });
 
     if(user)
     {
         
-        res.render("joinproject.ejs", {name: user.username, mistake: joinProjMistake, notifs: notifuser})
+        res.render("joinproject.ejs", {name: user.username, mistake: App.mistakes.joinProjMistake, notifs: notifuser})
 
     }else
     {
@@ -227,24 +230,24 @@ app.post('/joinproject', async (req,res) => {
     let joinId = req.body.projectid;
     joinId = joinId.trim();
 
-    let user = await userModel.findOne({ email: globalemail });
+    let user = await userModel.findOne({ email: App.globals.globalemail });
     let project = await projectModel.findOne({ id: joinId });
 
-    if(project.owner == undefined)
+    if(joinId == "" || !project)
     {
-        joinProjMistake = "That Project ID does not exist!";
+        App.mistakes.joinProjMistake = "That Project ID does not exist!";
         return res.redirect('/joinproject');
     }
 
     if(project.members.includes(user.email))
     {
-        joinProjMistake = "You are already in that group!";
+        App.mistakes.joinProjMistake = "You are already in that group!";
         return res.redirect('/joinproject');
     }
 
     if(project.private == true)
     {
-        joinProjMistake = "That project is private!";
+        App.mistakes.joinProjMistake = "That project is private!";
         return res.redirect('/joinproject');
     }
 
@@ -275,12 +278,12 @@ app.post('/joinproject', async (req,res) => {
         )
 
     
-        joinProjMistake = "Success! Sent the join request!";
+        App.mistakes.joinProjMistake = "Success! Sent the join request!";
         return res.redirect('/joinproject');
 
     }
 
-    joinProjMistake = "You have already sent a request.";
+    App.mistakes.joinProjMistake = "You have already sent a request.";
         return res.redirect('/joinproject');
 
 })
@@ -289,14 +292,14 @@ app.post('/joinproject', async (req,res) => {
 
 app.get('/joinrequests', isAuth, async (req,res) => {
 
-    let user = await userModel.findOne({ email: globalemail });
+    let user = await userModel.findOne({ email: App.globals.globalemail });
     let notifuser = await notifModel.findOne({ email: user.email });
 
     if(!user)
     {
         res.redirect("/login")
     }
-    let allrequests = await joinReqModel.find({ account: globalemail });
+    let allrequests = await joinReqModel.find({ account: App.globals.globalemail });
 
     res.render("joinrequests.ejs", {name: user.username, request: allrequests, notifs: notifuser})
     
@@ -361,7 +364,7 @@ app.post('/joinrequests',  async (req,res) => {
 
 app.post('/removeprojectmember', async (req,res) => {
 
-    let user = await userModel.findOne({ email: globalemail });
+    let user = await userModel.findOne({ email: App.globals.globalemail });
 
     let holder = req.body;
     let stringholder = JSON.stringify(holder);
@@ -499,8 +502,8 @@ app.post('/deleteproject', async (req,res) => {
     await projectModel.deleteOne({ id: project.id });
 
 
-    globalprojectid = "";
-    globalticketid = "";
+    App.globals.globalprojectid = "";
+    App.globals.globalticketid = "";
 
 
     res.redirect('/index');
@@ -511,13 +514,13 @@ app.post('/deleteproject', async (req,res) => {
 // takes you to create project page
 app.get('/createproj', isAuth, async (req,res) => {
 
-    let user = await userModel.findOne({ email: globalemail });
+    let user = await userModel.findOne({ email: App.globals.globalemail });
     let notifuser = await notifModel.findOne({ email: user.email });
 
     if(user)
     {
         
-        res.render("createproj.ejs", {name: user.username, mistake: createProjMistake, notifs: notifuser})
+        res.render("createproj.ejs", {name: user.username, mistake: App.mistakes.createProjMistake, notifs: notifuser})
     }else
     {
         res.redirect("/login")
@@ -530,7 +533,7 @@ app.get('/createproj', isAuth, async (req,res) => {
 app.post('/createproj', async (req,res) => {
 
 
-    let user = await userModel.findOne({ email: globalemail });
+    let user = await userModel.findOne({ email: App.globals.globalemail });
 
     let private = "";
 
@@ -547,8 +550,8 @@ app.post('/createproj', async (req,res) => {
 
     if(projname == null || projname == "" || desc == null || desc == "")
     {
-        createProjMistake = "Please enter a project name and description!";
-        res.redirect("/createproj")
+        App.mistakes.createProjMistake = "Please enter a project name and description!";
+        return res.redirect("/createproj")
         // res.render("createproj.ejs", {name: user.username})
     }
 
@@ -567,7 +570,7 @@ app.post('/createproj', async (req,res) => {
 
     await project1.save();
 
-    globalprojectid = project1.id;
+    App.globals.globalprojectid = project1.id;
     
     res.redirect("/project");
 
@@ -578,7 +581,7 @@ app.post('/createproj', async (req,res) => {
 // displays all projects belonging to user 
 app.get('/projects', isAuth, async (req,res) => {
 
-    let user = await userModel.findOne({ email: globalemail });
+    let user = await userModel.findOne({ email: App.globals.globalemail });
     let notifuser = await notifModel.findOne({ email: user.email });
 
     if(user)
@@ -609,7 +612,7 @@ app.post('/projects', async (req,res) => {
         res.redirect("/projects");
     }
 
-    globalprojectid = project.id;
+    App.globals.globalprojectid = project.id;
 
     res.redirect("/project")
 
@@ -617,14 +620,14 @@ app.post('/projects', async (req,res) => {
 
 app.get('/editproject', isAuth, async (req,res) => {
 
-    if(globalprojectid == "" || globalemail == "")
+    if(App.globals.globalprojectid == "" || App.globals.globalemail == "")
     {
         res.redirect('/index');
     }
 
-    let user = await userModel.findOne({ email: globalemail });
+    let user = await userModel.findOne({ email: App.globals.globalemail });
 
-    let project = await projectModel.findOne({ id: globalprojectid });
+    let project = await projectModel.findOne({ id: App.globals.globalprojectid });
 
     let notifuser = await notifModel.findOne({ email: user.email });
 
@@ -642,7 +645,7 @@ app.post('/editproject', async (req,res) => {
 
     const response2 = await projectModel.findOneAndUpdate(
         {
-            id: globalprojectid,
+            id: App.globals.globalprojectid,
         },
         {
             $set:{
@@ -663,19 +666,19 @@ app.post('/editproject', async (req,res) => {
 app.get('/ticket', isAuth, async (req,res) => {
 
     
-    let user = await userModel.findOne({ email: globalemail });
+    let user = await userModel.findOne({ email: App.globals.globalemail });
 
     if(!user)
     {
         return res.redirect('/login');
     }
 
-    if(globalticketid == "")
+    if(App.globals.globalticketid == "")
     {
         res.redirect('/index');
     }
 
-    let ticket = await ticketModel.findOne({ id: globalticketid });
+    let ticket = await ticketModel.findOne({ id: App.globals.globalticketid });
 
 
     let project = await projectModel.findOne({ id: ticket.projectid})
@@ -712,11 +715,11 @@ app.post('/sendcomment', async(req,res) => {
     
     const response = await commentsModel.findOneAndUpdate(
         {
-            ticketid: globalticketid,
+            ticketid: App.globals.globalticketid,
         },
         {
             $push: {
-                user: globalemail,
+                user: App.globals.globalemail,
                 comment: thecomment,
                 timesent: getTime(),
             }
@@ -725,7 +728,7 @@ app.post('/sendcomment', async(req,res) => {
 
     const response2 = await projectModel.findOneAndUpdate(
         {
-            id: globalticketid,
+            id: App.globals.globalticketid,
         },
         {
             $set:{
@@ -742,13 +745,13 @@ app.post('/sendcomment', async(req,res) => {
 // goes to create ticket page ( has to have an project attracted)
 app.get('/createtic', isAuth, async (req,res) => {
 
-    let user = await userModel.findOne({ email: globalemail });
+    let user = await userModel.findOne({ email: App.globals.globalemail });
 
     let notifuser = await notifModel.findOne({ email: user.email });
 
     if(user)
     {
-        res.render("createtic.ejs", {name: user.username, mistake: createTicketMistake, id: globalprojectid, notifs: notifuser})
+        res.render("createtic.ejs", {name: user.username, mistake: App.mistakes.createTicketMistake, id: App.globals.globalprojectid, notifs: notifuser})
     }else
     {
         res.redirect("/login")
@@ -760,7 +763,7 @@ app.get('/createtic', isAuth, async (req,res) => {
 // allows someone to create a ticket for a project
 // note to self: only the owner/members can make ticket for a project 
 app.post('/createtic', async (req,res) => {
-    let user = await userModel.findOne({ email: globalemail });
+    let user = await userModel.findOne({ email: App.globals.globalemail });
 
     // copy the thing you did in add members ticket
 
@@ -768,22 +771,22 @@ app.post('/createtic', async (req,res) => {
 
     if(projid == null || desc == null || ticname == null || projid == "" || desc=="" || ticname == "" )
     {
-        createTicketMistake = "Please fill all the fields!"
-        res.redirect("/createtic");
+        App.mistakes.createTicketMistake = "Please fill all the fields!"
+        return res.redirect("/createtic");
         // res.render("createtic.ejs", {name: user.username})
     }
 
     let project = await projectModel.findOne({ id: projid})
 
-    if(project.owner == undefined)
+    if(!project)
     {
-        createTicketMistake = "That project id does not exist!";
-        res.redirect('/createtic');
+        App.mistakes.createTicketMistake = "That project id does not exist!";
+        return res.redirect('/createtic');
     }
     // checks if the person create the ticket is in the project
     if(!(project.members.includes(user.email))){
-        createTicketMistake = "You are not a team member in that project!";
-        res.redirect("/createtic");
+        App.mistakes.createTicketMistake = "You are not a team member in that project!";
+        return res.redirect("/createtic");
         // res.render("createtic.ejs", {name: user.username})
     }
 
@@ -841,7 +844,7 @@ app.post('/createtic', async (req,res) => {
 
     await comment1.save();
 
-    globalticketid = ticket1.id;
+    App.globals.globalticketid = ticket1.id;
 
 
     res.redirect("/ticket")
@@ -852,7 +855,7 @@ app.post('/createtic', async (req,res) => {
 // page to view all the tickets your apart of
 app.get('/tickets', isAuth, async (req,res) => {
 
-    let user = await userModel.findOne({ email: globalemail });
+    let user = await userModel.findOne({ email: App.globals.globalemail });
 
     let notifuser = await notifModel.findOne({ email: user.email });
 
@@ -884,7 +887,7 @@ app.post('/tickets', async (req,res) => {
         res.redirect("/tickets");
     }
 
-    globalticketid = ticket.id;
+    App.globals.globalticketid = ticket.id;
 
     res.redirect("/ticket")
 
@@ -930,7 +933,7 @@ app.post('/deleteticket', async (req,res) => {
 
     await ticketModel.deleteOne({ id: ticketid });
 
-    globalticketid = "";
+    App.globals.globalticketid = "";
 
 
     res.redirect('/project');
@@ -942,14 +945,14 @@ app.post('/deleteticket', async (req,res) => {
 
 app.get('/editticket', isAuth, async (req,res) => {
 
-    if(globalticketid == "" || globalemail == "")
+    if(App.globals.globalticketid == "" || App.globals.globalemail == "")
     {
         res.redirect('/index');
     }
 
-    let user = await userModel.findOne({ email: globalemail });
+    let user = await userModel.findOne({ email: App.globals.globalemail });
 
-    let ticket = await ticketModel.findOne({ id: globalticketid });
+    let ticket = await ticketModel.findOne({ id: App.globals.globalticketid });
     let notifuser = await notifModel.findOne({ email: user.email });
 
     res.render("editticket.ejs", {user: user, ticket: ticket, notifs: notifuser})
@@ -967,7 +970,7 @@ app.post('/editticket', async (req,res) => {
 
     const response2 = await ticketModel.findOneAndUpdate(
         {
-            id: globalticketid,
+            id: App.globals.globalticketid,
         },
         {
             $set:{
@@ -989,7 +992,7 @@ app.post('/editticket', async (req,res) => {
 
 app.post('/removeticketmember', async (req,res) => {
 
-    let user = await userModel.findOne({ email: globalemail });
+    let user = await userModel.findOne({ email: App.globals.globalemail });
 
     let holder = req.body;
     let stringholder = JSON.stringify(holder);
@@ -1021,7 +1024,7 @@ app.post('/removeticketmember', async (req,res) => {
 // ADD TICKET MEMBER
 app.post('/addticketmember', async (req,res) => {
 
-    let user = await userModel.findOne({ email: globalemail });
+    let user = await userModel.findOne({ email: App.globals.globalemail });
 
     let holder = req.body;
     let stringholder = JSON.stringify(holder);
@@ -1069,7 +1072,7 @@ app.post('/addticketmember', async (req,res) => {
 
 app.get('/register', (req,res) => {
 
-    return res.render("register.ejs", {mistake: registerMistake});
+    return res.render("register.ejs", {mistake: App.mistakes.registerMistake});
 
 })
 
@@ -1080,13 +1083,13 @@ app.post("/register", async (req,res) => {
     let user = await userModel.findOne({email: email});
 
     if(user){
-        registerMistake = "This user already exists.";
+        App.mistakes.registerMistake = "This user already exists.";
         return res.redirect("/register");
     }
 
     if(password != repeatpassword)
     {
-        registerMistake = "Repeated password does not match password.";
+        App.mistakes.registerMistake = "Repeated password does not match password.";
         return res.redirect("/register");
     }
 
@@ -1100,14 +1103,14 @@ app.post("/register", async (req,res) => {
 
     await user.save();
 
-    loginMistake = "";
+    App.mistakes.loginMistake = "";
     return res.redirect("/login")
 })
 
 app.get('/login', (req,res) => {
 
-    registerMistake = "";
-    res.render("login.ejs", {mistake: loginMistake})
+    App.mistakes.registerMistake = "";
+    res.render("login.ejs", {mistake: App.mistakes.loginMistake})
 })
 
 app.post('/login', async (req,res) => {
@@ -1118,22 +1121,22 @@ app.post('/login', async (req,res) => {
 
     if(!user)
     {
-        loginMistake = "You entered an incorrect email or password!"
+        App.mistakes.loginMistake = "You entered an incorrect email or password!"
         return res.redirect("/login")
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if(!isMatch){
-        loginMistake = "Wrong password!"
+        App.mistakes.loginMistake = "Wrong password!"
         return res.redirect("/login")
         // return res.render("login.ejs")
     }
 
     req.session.isAuth = true;
 
-    globalemail = user.email;
-    loginMistake = "";
+    App.globals.globalemail = user.email;
+    App.mistakes.loginMistake = "";
 
     const notifuser = await notifModel.findOne({email: email});
 
@@ -1161,13 +1164,13 @@ app.post('/logout', (req,res) => {
         res.redirect("/login")
     })
 
-    globalemail = "";
-    globalprojectid = "";
-    globalticketid = "";
-    loginMistake = "";
-    joinProjMistake = "";
-    createProjMistake = "";
-    createTicketMistake = "";
+    App.globals.globalemail = "";
+    App.globals.globalprojectid = "";
+    App.globals.globalticketid = "";
+    App.mistakes.loginMistake = "";
+    App.mistakes.joinProjMistake = "";
+    App.mistakes.createProjMistake = "";
+    App.mistakes.createTicketMistake = "";
 
 })
 
@@ -1176,7 +1179,7 @@ app.post('/logout', (req,res) => {
 
 
 app.get('/forgot-password', async (req,res) => {
-    return res.render("forgot-password.ejs", {mistake: forgotMistake});
+    return res.render("forgot-password.ejs", {mistake: App.mistakes.forgotMistake});
 })
 
 
@@ -1190,7 +1193,7 @@ app.post('/forgot-password', async (req,res) => {
 
     if(!user)
     {
-        forgotMistake = "That email does not exist!"
+        App.mistakes.forgotMistake = "That email does not exist!"
         return res.redirect('/forgot-password');
     }
     
@@ -1231,15 +1234,15 @@ app.post('/forgot-password', async (req,res) => {
     console.log("Message sent: %s", info.messageId);
     console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
 
-    forgotMistake = "Success! The link has been sent to your email!";
+    App.mistakes.forgotMistake = "Success! The link has been sent to your email!";
     res.redirect('/forgot-password')
 
     }catch(err){
 
         console.log(err);
 
-        forgotMistake = "Something went wrong sending the email!";
-        res.redirect('/forgot-password')
+        App.mistakes.forgotMistake = "Something went wrong sending the email!";
+        return res.redirect('/forgot-password')
     }
 
 
@@ -1275,7 +1278,7 @@ app.get('/reset-password/:useremail/:token', async (req,res) => {
         console.log(err);
 
 
-        forgotMistake = "The link has expired."
+        App.mistakes.forgotMistake = "The link has expired."
         res.redirect('/forgot-password');
     }
 
@@ -1323,7 +1326,7 @@ app.post('/reset-password/:useremail/:token', async (req,res) => {
             }
         )
 
-        loginMistake = "";
+        App.mistakes.loginMistake = "";
         res.redirect('/login');
 
     }catch(err){
