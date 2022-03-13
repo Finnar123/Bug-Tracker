@@ -195,7 +195,7 @@
                                     Alerts Center
                                 </h6>
 
-                                <% for(let i = 1; i < notifs.topic.length; i++) { %>
+                                <% for(let i = notifs.topic.length - 5; i < notifs.topic.length; i++) { %>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="mr-3">
                                         <div class="icon-circle bg-primary">
@@ -219,8 +219,11 @@
                                         <div class="small text-gray-500">December 2, 2019</div>
                                         bro
                                     </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a> -->
+                                </a> 
+                                
+                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a> 
+                            -->
+                                
 
                             </div>
                         </li>
@@ -292,7 +295,7 @@
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
                                 <!-- PROFILE PROFILE -->
-                                <a class="dropdown-item" href="#">
+                                <!-- <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
@@ -303,8 +306,8 @@
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Activity Log
-                                </a>
-                                <div class="dropdown-divider"></div>
+                                </a> -->
+                                <!-- <div class="dropdown-divider"></div> -->
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout

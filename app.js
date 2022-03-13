@@ -25,7 +25,7 @@ const notifModel = require('./models/Notifs')
 
 var App = {
     globals: {
-        globalemail: "say something",
+        globalemail: "",
         globalprojectid: "",
         globalticketid:  "",
     },
@@ -44,8 +44,6 @@ const JWT_SECRET = "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N
 
 
 // TASKS
-
-//
 
 
 function getToday(){

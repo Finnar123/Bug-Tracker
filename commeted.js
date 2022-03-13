@@ -1,22 +1,22 @@
 
-var App = {
-    globals: {
-        globalemail: "say something",
-        globalprojectid: "",
-        globalticketid:  "",
-    },
-    mistakes: {
-    joinProjMistake:"",
-    loginMistake: "",
-    createProjMistake: "",
-    createTicketMistake: "",
-    registerMistake: "",
-    forgotMistake: "",
-    }
-}
+// var App = {
+//     globals: {
+//         globalemail: "say something",
+//         globalprojectid: "",
+//         globalticketid:  "",
+//     },
+//     mistakes: {
+//     joinProjMistake:"",
+//     loginMistake: "",
+//     createProjMistake: "",
+//     createTicketMistake: "",
+//     registerMistake: "",
+//     forgotMistake: "",
+//     }
+// }
 
 
-console.log(App.globals.globalemail);
+// console.log(App.globals.globalemail);
 
 
 // console.log(App.globals.globalemail);
