@@ -11,7 +11,10 @@ const app = express();
 
 const jwt = require('jsonwebtoken')
 
-const mongoURI = "mongodb://localhost:27017/sessions";
+//const mongoURI = "mongodb://localhost:27017/sessions";
+
+//dbBexJHCc8Bs6u7D
+const mongoURI = "mongodb+srv://ken123:dbBexJHCc8Bs6u7D@cluster0.dlxep.mongodb.net/test";
 
 const userModel = require('./models/User')
 const projectModel = require('./models/Projects')
