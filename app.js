@@ -267,6 +267,23 @@ app.post('/joinproject', async (req,res) => {
     
         await request.save();
 
+        let notifuser = await notifModel.findOne({ email: project.owner });
+
+        if(notifuser.topic.length > 5 )
+        {
+            const response3 = await notifModel.findOneAndUpdate(
+                {
+                    email: project.owner,
+                },{
+                    $pop:{
+                        topic: -1,
+                        timecreated: -1
+                    }
+                }
+            )
+    
+        }
+
         const response3 = await notifModel.findOneAndUpdate(
             {
                 email: project.owner,
@@ -393,6 +410,24 @@ app.post('/removeprojectmember', async (req,res) => {
     let project = await projectModel.findOne({ id: projectid});
 
 
+    let notifuser = await notifModel.findOne({ email: memberemail });
+
+        if(notifuser.topic.length > 5 )
+        {
+            const response3 = await notifModel.findOneAndUpdate(
+                {
+                    email: memberemail,
+                },{
+                    $pop:{
+                        topic: -1,
+                        timecreated: -1
+                    }
+                }
+            )
+    
+        }
+
+
         const response3 = await notifModel.findOneAndUpdate(
             {
                 email: memberemail,
@@ -446,6 +481,24 @@ app.post('/deleteproject', async (req,res) => {
 
         for(let i = 0; i < project.members.length; i++)
         {
+
+        let notifuser = await notifModel.findOne({ email: project.members[i] });
+
+        if(notifuser.topic.length > 5 )
+        {
+            const response3 = await notifModel.findOneAndUpdate(
+                {
+                    email: project.members[i],
+                },{
+                    $pop:{
+                        topic: -1,
+                        timecreated: -1
+                    }
+                }
+            )
+    
+        }
+
 
         const response3 = await notifModel.findOneAndUpdate(
             {
@@ -808,6 +861,24 @@ app.post('/createtic', async (req,res) => {
         // sends a notif to all project members when a new ticket is created
         for(let i = 0; i < project.members.length; i++)
         {
+
+        let notifuser = await notifModel.findOne({ email: project.members[i] });
+
+        if(notifuser.topic.length > 5 )
+        {
+            const response3 = await notifModel.findOneAndUpdate(
+                {
+                    email: project.members[i],
+                },{
+                    $pop:{
+                        topic: -1,
+                        timecreated: -1
+                    }
+                }
+            )
+    
+        }
+
 
         const response3 = await notifModel.findOneAndUpdate(
             {
